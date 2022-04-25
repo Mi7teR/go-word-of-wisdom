@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    environment:
+      FILE: $FILE
+      PORT: $PORT
+      BITS: $BITS
+      ITERATIONS: $ITERATIONS
+    ports:
+      - '${PORT}:${PORT}'
+    image: github.com/mi7ter/go-word-of-wisdom/server:latest
+    restart: 'no'
+
+  client:
+    build:
+      context: .
+      dockerfile: client.Dockerfile
+    environment:
+      ADDR: $ADDR
+      ITERATIONS: $ITERATIONS
+    image: github.com/mi7ter/go-word-of-wisdom/client:latest
+    restart: 'no'
+    depends_on:
+      - server
